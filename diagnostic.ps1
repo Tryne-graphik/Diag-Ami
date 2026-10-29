@@ -66,7 +66,9 @@ Write-Host "Diagnostic en cours (1 a 2 minutes)..." -ForegroundColor Cyan
         Ev @{LogName = 'System'; ProviderName = 'Microsoft-Windows-WHEA-Logger'; StartTime = (Get-Date).AddDays(-60) } 20
     }
     Section 'PLANTAGES PILOTE GRAPHIQUE (TDR) 30 jours' {
-        Ev @{LogName = 'System'; ProviderName = 'Display', 'nvlddmkm', 'amdkmdag'; StartTime = (Get-Date).AddDays(-30) } 20
+        # Display 4125 = message HDR sans importance : on ne garde que les vrais timeouts (4101 et voisins)
+        Ev @{LogName = 'System'; ProviderName = 'Display'; Id = 4101, 4102, 4103, 4116, 4117, 4118, 4119; StartTime = (Get-Date).AddDays(-60) } 20
+        Ev @{LogName = 'System'; ProviderName = 'nvlddmkm', 'amdkmdag', 'amdwddmg'; StartTime = (Get-Date).AddDays(-60) } 20
     }
     Section 'RESULTAT DU TEST MEMOIRE WINDOWS' {
         Ev @{LogName = 'System'; ProviderName = 'Microsoft-Windows-MemoryDiagnostics-Results' } 5
